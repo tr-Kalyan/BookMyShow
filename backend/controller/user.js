@@ -19,7 +19,7 @@ const registerUser = async (req,res) =>{
 
         //hash the password
         const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password)
+        const hashedPassword = await bcrypt.hash(password,saltRounds)
 
         //If user does not exist, create a new user and save it to the database
         const newUser = new userModel({
@@ -58,9 +58,9 @@ const loginUser = async (req,res) => {
         }
 
         //compare the password with hashedPassword from database
-        const isMatch = bcrypt.compare(passwordFromClient,user.password);
+        const isMatch = await bcrypt.compare(passwordFromClient,user.password);
 
-
+        console.log(isMatch)
         if(!isMatch){
             return res.status(401).json({
                 message:"invalid credentials"
