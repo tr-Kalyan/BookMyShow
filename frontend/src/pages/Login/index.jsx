@@ -1,25 +1,36 @@
 import React from "react";
 import { Button, Form, Input,message } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../api/users";
-const onFinish = async (values) => {
-  try{
-    const response = await LoginUser(values);
-    console.log(response,response.status)
-    if (response.status == 200){
-      console.log(response.status,response.data)
-      message.success(response.data.message)
-    }else{
-      message.error(response.data.message)
-    }
-  }
-  catch(err){
-    message.error(err.message)  
-  }
-};
+
+
+
+
+
 
 
 function Login() {
+
+  const navigate = useNavigate();
+
+  const onFinish = async (values) => {
+    try{
+      const response = await LoginUser(values);
+  
+      if (response.status == 200){
+        
+        message.success(response.data.message)
+
+        navigate("/")
+      }else{
+        message.error(response.data.message)
+      }
+    }
+    catch(err){
+      message.error(err.message)  
+    }
+  };
+
  return (
    <>
      <main className="App-header">
