@@ -8,8 +8,11 @@ const authMiddleware = async(req,res,next) => {
 
         const token = authorization.split(" ")[1];
 
-        const verifiedToken = jwt.verify(token,privateKey);
 
+
+        const verifiedToken = jwt.verify(token,privateKey);
+ 
+        req.body = req.body || {};
         req.body.id = verifiedToken.userId;
 
         next();

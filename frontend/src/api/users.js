@@ -14,10 +14,22 @@ export const RegisterUser = async (value) => {
 export const LoginUser = async (value) => {
     try{
         const response = await axiosInstance.post("api/users/login", value);
-        return response;
+        return response.data;
     }catch(err){
         console.log(err);
-        return err.response
+        return err.response.data
     }
 }
 
+export const GetCurrentUser = async (value) => {
+    try{
+        const response = await axiosInstance.get('api/users/current',value);
+        
+        return response.data;
+    }catch(err){
+
+        console.log("lafanga from api")
+        console.log(err);
+        return err.response.data;
+    }
+}

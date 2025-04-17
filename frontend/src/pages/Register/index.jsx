@@ -5,18 +5,15 @@ import {RegisterUser} from "../../api/users"
 const onFinish = async (values) => {
   try{
     const response = await RegisterUser(values);
-    if (response.status == 201){
-      
+    
+    if (response.status === 201){
       message.success(response.data.message)
-    }else if(response.status == 400){
-      //console.log('hola',response.data.message)
-      message.error(response.data.message)
     }else{
-      message.error(response.data)
+      message.error(response.data.message)
     }
   }
   catch(err){
-    message.error(err.response.data)
+    message.error(err.message)
   }
 };
 

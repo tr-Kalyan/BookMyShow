@@ -1,4 +1,4 @@
-import React from "react";
+import {useEffect} from "react";
 import { Button, Form, Input,message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { LoginUser } from "../../api/users";
@@ -16,20 +16,30 @@ function Login() {
   const onFinish = async (values) => {
     try{
       const response = await LoginUser(values);
+
   
-      if (response.status == 200){
-        
-        message.success(response.data.message)
+      if (response.data){
+
+        message.success(response.message)
+
+        localStorage.setItem("token",response.data)
 
         navigate("/")
       }else{
-        message.error(response.data.message)
+        console.log(response)
+        message.error(response.message)
       }
     }
     catch(err){
       message.error(err.message)  
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")){
+      navigate("/")
+    }
+  },[])
 
  return (
    <>
