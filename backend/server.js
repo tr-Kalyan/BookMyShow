@@ -9,6 +9,7 @@ connectDB();
 app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/movies", MovieRouter);
+app.use("/api/theatres", TheatreRouter);
 
 app.listen(process.env.PORT || 8080, () => {
     console.log("server is running on port", process.env.PORT || 8080);
