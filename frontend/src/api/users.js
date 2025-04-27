@@ -28,7 +28,6 @@ export const GetCurrentUser = async (value) => {
         return response.data;
     }catch(err){
 
-        console.log("lafanga from api")
         console.log(err);
         return err.response.data;
     }

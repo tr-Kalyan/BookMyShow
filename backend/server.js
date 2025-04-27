@@ -3,6 +3,7 @@ const express = require("express");
 const connectDB = require("./config/db");
 const userRouter = require("./routes/user");
 const MovieRouter = require("./routes/movie");
+const TheatreRouter = require("./routes/theatre");
 const app = express();
 connectDB();
 
