@@ -9,6 +9,9 @@ import User from "./pages/User";
 import ProtectedRoute from "./components/ProtectedRoute";
 import {Provider} from "react-redux"
 import store from "./redux/store";
+import SingleMovie from "./pages/SingleMovie";
+import BookShow from "./pages/BookShow";
+
 
 
 
@@ -17,14 +20,17 @@ function App() {
     <Provider store={store}>
       <div>
         <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/admin" element={<ProtectedRoute><Admin/></ProtectedRoute>} />
-          <Route path="/partner" element={<ProtectedRoute><Partner/></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><User/></ProtectedRoute>} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<ProtectedRoute><Admin/></ProtectedRoute>} />
+            <Route path="/partner" element={<ProtectedRoute><Partner/></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><User/></ProtectedRoute>} />
+            <Route path="/movie/:id" element={<ProtectedRoute><SingleMovie/></ProtectedRoute>} />
+
+          <Route path="/book-show/:id" element={<ProtectedRoute><BookShow/></ProtectedRoute>} />
+          </Routes>
         </BrowserRouter>
       </div>
     </Provider>

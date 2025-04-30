@@ -53,3 +53,14 @@ export const getAllTheatresByMovie = async (value) => {
         return err.response.data
     }
 }
+
+export const getShowById = async (obj) => {
+    try{
+        console.log("hello",obj);
+        const response = await axiosInstance.get(`/api/shows/${obj.showId}`,)
+        return response.data
+    }catch(err){
+        console.log(err);
+        return err.response.data
+    }
+}
