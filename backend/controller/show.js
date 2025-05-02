@@ -79,22 +79,30 @@ const getAllShowsByMovie = async (req, res) => {
   try {
     const { movie, date } = req.body;
     const shows = await ShowModel.find({ movie, date }).populate("theatre");
-    console.log("all shows", shows);
-    
-    //filter out the unique theatres
-    let uniqueTheatres = [];
-    shows.forEach((show) => {
-      console.log(show.theatre.id);
-      
-      let isTheatre = uniqueTheatres.find((theatre => theatre.id === show.theatre.id));
-      if(!isTheatre){
-        let showsOfThisTheatre = shows.filter((showObj) => showObj.theatre.id === show.theatre.id);
-        uniqueTheatres.push({
-          ...show.theatre._doc,
-          shows: showsOfThisTheatre
+
+    // Group shows by theatre using reduce
+    const uniqueTheatres = shows.reduce((theatres, show) => {
+      const theatreId = show.theatre._id.toString();
+
+      // Find if theatre already exists in our array
+      const existingTheatre = theatres.find(t => t._id.toString() === theatreId);
+
+      if (!existingTheatre) {
+        // If theatre doesn't exist, add it with its first show
+        theatres.push({
+          _id: show.theatre._id,
+          name: show.theatre.name,
+          address: show.theatre.address,
+          shows: [show]
         });
+      } else {
+        // If theatre exists, just add the show to its shows array
+        existingTheatre.shows.push(show);
       }
-    })
+
+      return theatres;
+    }, []);
+
     res.status(200).json({
       success: true,
       message: "sent show of theatre",
@@ -107,6 +115,7 @@ const getAllShowsByMovie = async (req, res) => {
     });
   }
 };
+
 
 const getShowById = async (req, res) => {
   try {

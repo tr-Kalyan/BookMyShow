@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const path = require("path");
+let collectionName = path.basename(__filename).split(".")[0];
 
-//user account schema
 const movieSchema = new mongoose.Schema({
     name:{
         type: String,
@@ -32,6 +33,6 @@ const movieSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-const MovieModel = mongoose.model("movie", movieSchema);
+const MovieModel = mongoose.model(collectionName, movieSchema);
 
 module.exports = MovieModel;

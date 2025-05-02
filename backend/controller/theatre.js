@@ -103,8 +103,8 @@ const partnerTheatres =  async (req,res) => {
 
 module.exports = {
     addTheatre,
-    getAllTheatres,
-    updateTheatre,
-    deleteTheatre,
-    partnerTheatres
+  getAllTheatres,
+  updateTheatre,
+  deleteTheatre,
+  partnerTheatres
 }

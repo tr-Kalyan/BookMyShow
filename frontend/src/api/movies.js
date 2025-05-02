@@ -32,7 +32,7 @@ export const updateMovie = async (value) => {
 
 export const deleteMovie = async (obj) => {
     try{
-        console.log("hello",obj);
+        console.log("hello bokka",obj);
         const response = await axiosInstance.delete(`/api/movies/${obj.movieId}`)
         return response.data
     }catch(err){
@@ -41,13 +41,11 @@ export const deleteMovie = async (obj) => {
     }
 }
 
-export const getMovieById = async (obj) =>{
+export const getMovieById = async (obj) => {
     try{
         const response = await axiosInstance.get(`/api/movies/${obj.movieId}`)
-
         return response.data
-    }
-    catch(err){
+    }catch(err){
         console.log(err);
         return err.response.data
     }

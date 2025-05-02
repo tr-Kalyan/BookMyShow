@@ -10,9 +10,9 @@ export const addShow = async (value) => {
     }
 }
 
-export const updateShow = async () => {
+export const updateShow = async (value) => {
     try{
-        const response = await axiosInstance.put("/api/shows")
+        const response = await axiosInstance.put("/api/shows", value)
         return response.data
     }catch(err){
         console.log(err);
@@ -34,7 +34,7 @@ export const deleteShow = async (obj) => {
 
 export const getShowsByTheatre = async (value) => {
     try{
-        console.log("hello",value);
+        console.log("hello bokka",value);
         const response = await axiosInstance.post(`/api/shows/by-theatre`, value)
         return response.data
     }catch(err){
@@ -47,6 +47,7 @@ export const getAllTheatresByMovie = async (value) => {
     try{
         console.log("hello",value);
         const response = await axiosInstance.post(`/api/shows/of-theatre`, value)
+        console.log("Bocchulo theater api",response.data)
         return response.data
     }catch(err){
         console.log(err);

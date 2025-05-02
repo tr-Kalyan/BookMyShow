@@ -3,7 +3,6 @@ import { Button, message, Table } from "antd";
 import { hideLoading, showLoading } from "../../redux/loaderSlice";
 import { getAllTheatres, updateTheatre } from "../../api/theatre";
 import { useDispatch } from "react-redux";
-
 function TheatresTable() {
   const [theatres, setTheatres] = useState([]);
   const dispatch = useDispatch();
