@@ -1,9 +1,9 @@
-const stripe = require("stripe");
 require("dotenv").config({ path: "../.env" });
 const stripeKey = process.env.STRIPE_KEY;
+const stripe = require("stripe")(stripeKey);
 const BookingModel = require("../models/booking");
 const ShowModel = require("../models/show");
-
+const emailHelper = require("../utils/emailHelper");
 const makePayment = async (req, res) => {
   try {
     const { token, amount } = req.body;
@@ -25,7 +25,7 @@ const makePayment = async (req, res) => {
 
     res.send({
       success: true,
-      message: "payment Successfull! Ticket(s) Booked",
+      message: "Payment Successful! Ticket(s) Booked",
       data: transactionId,
     });
   } catch (err) {
@@ -45,9 +45,28 @@ const bookShow = async (req, res) => {;
     const show = await ShowModel.findById(req.body.show).populate("movie");
     const updatedBookSeats = [...show.bookedSeats, ...req.body.seats];
     await ShowModel.findByIdAndUpdate(show, { bookedSeats: updatedBookSeats });
+    const bookingDetails = await BookingModel.findById(newBooking["_id"]).populate("user").populate("show").populate({
+      path: "show",
+      populate: {
+        path: "theatre",
+        model: "theatre",
+      },
+    });
+    //use lodash's get method to acces nested values
+    const emailDetails = {
+      name: bookingDetails.user?.email,
+      movie: bookingDetails.show?.name,
+      theatre:bookingDetails.show?.theatre?.name,
+      date:bookingDetails.show?.date,
+      time: bookingDetails.show?.time, 
+      seats: bookingDetails.seats, 
+      amount:bookingDetails.show?.ticketPrice * bookingDetails.show?.bookedSeats.length, 
+      transactionId: bookingDetails.transactionId
+    }
+    await emailHelper("tickets", bookingDetails.user.email,emailDetails);
     res.send({
       success: true,
-      message: "new booking done",
+      message: "Booking done !",
       data: newBooking,
     });
   } catch (err) {
@@ -67,14 +86,14 @@ const getAllBookings = async (req, res) => {
         path: "show",
         populate: {
           path: "movie",
-          model: "movies",
+          model: "movie",
         },
       })
       .populate({
         path: "show",
         populate: {
           path: "theatre",
-          model: "theatres",
+          model: "theatre",
         },
       });
     res.send({

@@ -1,15 +1,15 @@
-const {axiosInstance} = require('./index')
+const {axiosInstance} = require("./index");
 
-//register a new user
+//register a new user 
 export const RegisterUser = async (value) => {
     try{
         const response = await axiosInstance.post("api/users/register", value);
-        return response;
+        return response.data;
     }catch(err){
-        return err.response
+        console.log(err);
+        return err.response.data;
     }
 }
-
 
 export const LoginUser = async (value) => {
     try{
@@ -17,17 +17,35 @@ export const LoginUser = async (value) => {
         return response.data;
     }catch(err){
         console.log(err);
-        return err.response.data
+        return err.response.data;
     }
 }
 
 export const GetCurrentUser = async (value) => {
     try{
-        const response = await axiosInstance.get('api/users/current',value);
-        
+        const response = await axiosInstance.get('api/users/current', value);
         return response.data;
     }catch(err){
+        console.log(err);
+        return err.response.data;
+    }
+}
 
+export const ForgetPassword = async (value) => {
+    try{
+        const response = await axiosInstance.get('api/users/forgetpassword', value);
+        return response.data;
+    }catch(err){
+        console.log(err);
+        return err.response.data;
+    }
+}
+
+export const ResetPassword = async (value) => {
+    try{
+        const response = await axiosInstance.get('api/users/resetpassword', value);
+        return response.data;
+    }catch(err){
         console.log(err);
         return err.response.data;
     }

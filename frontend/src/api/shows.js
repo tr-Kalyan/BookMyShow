@@ -34,7 +34,7 @@ export const deleteShow = async (obj) => {
 
 export const getShowsByTheatre = async (value) => {
     try{
-        console.log("hello bokka",value);
+        console.log("hello",value);
         const response = await axiosInstance.post(`/api/shows/by-theatre`, value)
         return response.data
     }catch(err){
@@ -47,7 +47,6 @@ export const getAllTheatresByMovie = async (value) => {
     try{
         console.log("hello",value);
         const response = await axiosInstance.post(`/api/shows/of-theatre`, value)
-        console.log("Bocchulo theater api",response.data)
         return response.data
     }catch(err){
         console.log(err);

@@ -32,7 +32,7 @@ export const updateMovie = async (value) => {
 
 export const deleteMovie = async (obj) => {
     try{
-        console.log("hello bokka",obj);
+        console.log("hello",obj);
         const response = await axiosInstance.delete(`/api/movies/${obj.movieId}`)
         return response.data
     }catch(err){
