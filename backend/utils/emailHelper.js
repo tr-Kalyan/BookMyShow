@@ -24,7 +24,7 @@ async function emailHelper(templateName, receiverEmail, creds) {
     };
 
     const emailDetails = {
-      from: 'abhishek.goel_1@scaler.com', // sender address
+      from: 'kalyansde1@gmail.com', // sender address
       to: receiverEmail, // list of receivers
       subject: "Mail from ScalerShows", // Subject line
       text: `Hi ${creds.name} this is your reset otp ${creds.otp}`, // plain text body

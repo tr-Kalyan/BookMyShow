@@ -17,10 +17,12 @@ const userSchema = new mongoose.Schema({
     },
     role:{
         type:String,
-        email:['admin','user','partner'],
+        enum:['admin','user','partner'],
         required:true,
         default:"user"
-    }
+    },
+    otp: String,
+    otpExpiry: Date
 },{timestamps: true})
 
 const userModel = mongoose.model("user",userSchema);

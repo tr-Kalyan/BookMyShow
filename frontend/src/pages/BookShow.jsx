@@ -40,6 +40,7 @@ const BookShow = () => {
             dispatch(showLoading())
             const amount = selectedSeats.length * show.ticketPrice*100;
             const response = await makePayment({token, amount});
+            console.log("hi 2",response)
             book(response.data);
             if(response.success){
                 message.success(response.message);
@@ -66,6 +67,7 @@ const BookShow = () => {
                 message.success(response.message);
                 navigate("/profile");
             } else {
+                console.log("dkbose",response)
                 message.error(response.message);
             }
         }catch(err){
@@ -148,7 +150,7 @@ const BookShow = () => {
                 { getSeats() }
 
                 
-                { selectedSeats.length > 0 && <StripeCheckout billingAddress amount = {selectedSeats.length * show.ticketPrice*100} currency="INR" stripeKey="pk_test_2VmtDx5s0gIh5ojgsvijNrLa00GNgwwfEN" token={onToken}>
+                { selectedSeats.length > 0 && <StripeCheckout billingAddress amount = {selectedSeats.length * show.ticketPrice*100} currency="INR" stripeKey="pk_test_51BTUDGJAJfZb9HEBwDg86TN1KNprHjkfipXmEDMb0gSCassK5T3ZfxsAbcgKVmAIXF7oZ6ItlZZbXO6idTHE67IM007EwQ4uN3" token={onToken}>
                 <div className="max-width-600 mx-auto">
                     <Button type="primary" shape="round" size="large" block>Pay Now</Button>
                 </div>

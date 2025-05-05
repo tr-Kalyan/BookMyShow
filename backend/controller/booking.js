@@ -4,6 +4,7 @@ const stripe = require("stripe")(stripeKey);
 const BookingModel = require("../models/booking");
 const ShowModel = require("../models/show");
 const emailHelper = require("../utils/emailHelper");
+console.log(stripeKey)
 const makePayment = async (req, res) => {
   try {
     const { token, amount } = req.body;

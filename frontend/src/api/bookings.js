@@ -14,6 +14,7 @@ export const makePayment = async (value) => {
 export const bookShow = async (value) => {
     try{
         const response = await axiosInstance.post("api/bookings/book-show", value);
+        console.log("error from api booking",response)
         return response.data;
     }catch(err){
         console.log(err);
