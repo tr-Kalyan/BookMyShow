@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
 const dotenv = require("dotenv").config({path: "../.env"});
-const {SENDGRID_API_KEY} = process.env;
+const {SENDGRID_API_KEY,EMAIL_FROM,TEST_MODE,TEST_MAIL,TEST_NAME} = process.env
 
 function replaceContent(content, creds){
   let allKeys = Object.keys(creds); //[name,otp];
@@ -24,7 +24,7 @@ async function emailHelper(templateName, receiverEmail, creds) {
     };
 
     const emailDetails = {
-      from: 'kalyansde1@gmail.com', // sender address
+      from: EMAIL_FROM, // sender address
       to: receiverEmail, // list of receivers
       subject: "Mail from ScalerShows", // Subject line
       text: `Hi ${creds.name} this is your reset otp ${creds.otp}`, // plain text body
@@ -38,6 +38,17 @@ async function emailHelper(templateName, receiverEmail, creds) {
   }
 }
 
-emailHelper("otp","goelabhishek694@gmail.com",{"name":"Krishan", "otp":"1234"});
+
+// Only run test email if TEST_MODE is enabled
+if (process.env.TEST_MODE === 'true') {
+  emailHelper(
+    "otp",
+    process.env.TEST_EMAIL,
+    {
+      "name": process.env.TEST_NAME,
+      "otp": "1234"
+    }
+  );
+}
 
 module.exports = emailHelper;

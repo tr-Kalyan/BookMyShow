@@ -11,41 +11,62 @@ const ShowRouter = require("./routes/show");
 const BookingRouter = require("./routes/booking.js");
 const app = express();
 connectDB();
+app.use(express.json());
 
+app.set('trust proxy', 1)
+
+//rate-limiter
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes). 100reqs per 900sec
   standardHeaders: "draft-8", // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-  // store: ... , // Redis, Memcached, etc. See below.
+  
 });
 
 app.use(
-  helmet({
-	xFrameOptions: { action: "deny" },
-  })
+    helmet({
+        xFrameOptions: { action: "deny" },
+        contentSecurityPolicy: true,
+        hsts: true,
+        noSniff: true,
+        referrerPolicy: { policy: "same-origin" }
+        }
+    )
 );
 app.disable('x-powered-by');
-app.use(express.json());
 app.use(function (req, res, next) {
 	res.header("X-powered-by", "Blood, sweat, and tears")
 	next()
-  })
-app.use(mongoSanitize());
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       scriptSrc: ["'self'", "example.com"], // Allow scripts from 'self' and example.com
-//       styleSrc: ["'self'", "'unsafe-inline'"], // Allow inline styles (unsafe)
-//       imgSrc: ["'self'", "data:", "example.com"], // Allow images from 'self', data URLs, and example.com
-//       connectSrc: ["'self'", "api.example.com"], // Allow connections to 'self' and api.example.com
-//       fontSrc: ["'self'", "fonts.gstatic.com"], // Allow fonts from 'self' and fonts.gstatic.com
-//       objectSrc: ["'none'"], // Disallow object, embed, and applet elements
-//       upgradeInsecureRequests: [], // Upgrade insecure requests to HTTPS
-//     },
-//   })
-// );
+})
+
+// Sanitize input to prevent NoSQL injection
+function sanitize(obj) {
+    for (let key in obj) {
+        if (typeof obj[key] === 'object' && obj[key] !== null) {
+            sanitize(obj[key]); // recursive call
+        }
+        if (key.startsWith('$') || key.includes('.')) {
+            delete obj[key];
+        }
+    }
+}
+
+app.use((req, res, next) => {
+    if (req.body) sanitize(req.body);
+    if (req.query) sanitize(req.query);
+    if (req.params) sanitize(req.params);
+    next();
+});
+
+  
+
+
+
+
+
+
+
 app.use("/api", apiLimiter);
 
 app.use("/api/users", userRouter);

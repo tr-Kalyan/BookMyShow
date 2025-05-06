@@ -7,9 +7,9 @@ const privateKey = process.env.JWT_KEY;
 
 const registerUser = async (req,res) =>{
     try{
-        const {email,password} = req.body;
+        const {name,email,password} = req.body;
 
-        const ExistingUser = await userModel.findOne({email})
+        const ExistingUser = await UserModel.findOne({email})
 
         if (ExistingUser){
             return res.status(400).json({
@@ -22,7 +22,7 @@ const registerUser = async (req,res) =>{
         const hashedPassword = await bcrypt.hash(password,saltRounds)
 
         //If user does not exist, create a new user and save it to the database
-        const newUser = new userModel({
+        const newUser = new UserModel({
             ...req.body,
             password:hashedPassword
         });
@@ -51,15 +51,20 @@ const loginUser = async (req, res) => {
         message: "User does not exists. Please register.",
       });
     }
-    if (passwordFromClient !== user.password) {
+    
+
+    const match = await bcrypt.compare(passwordFromClient, user.password);
+    if (!match) {
       return res.status(400).json({
         message: "invalid credentials",
       });
     }
+
+
     const token = jwt.sign({ userId: user["_id"] }, privateKey, {
       expiresIn: "1d",
     });
-    console.log("login ", token);
+
     return res.status(200).json({
       message: "User logged in succesfully",
       data: token,
