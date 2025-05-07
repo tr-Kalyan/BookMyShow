@@ -1,12 +1,10 @@
-import { responsiveArray } from "antd/es/_util/responsiveObserver";
-
 const {axiosInstance} = require("./index");
 
 //register a new user 
 export const RegisterUser = async (value) => {
     try{
         const response = await axiosInstance.post("api/users/register", value);
-        return response;
+        return response.data;
     }catch(err){
         console.log("bokka",err);
         return err.response.data;
